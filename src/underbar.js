@@ -98,22 +98,33 @@
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
   //array: [1, 2, 3, 4, 5]
-  if (!isSorted) {
-    array = array.sort(function(a, b) {
-      return a - b;
-    })
-  }
-  let iterated = []; // [true, false, false, false, false]
-  let indexed = []; // [0, 1]
-  let nodup = [];  // [1, 2]
   
-  
-  
-  
-  
+    iterator = iterator || _.identity;
     
+    let result = []; 
+    let transformed = []; //[t, f, f, f, f]
+    let found;
+
+    _.each(array, function(ele) {
+      transformed.push(iterator(ele))
+    });
     
-    
+    if (isSorted) {
+      _.each(transformed, function(ele, i) {
+        if (_.indexOf(transformed, ele) === i) {
+          result.push(array[i])
+        }
+      });
+      
+    } else {
+      _.each(array, function(ele) {
+        found = _.indexOf(result, ele);
+        if (found === -1) {
+          result.push(ele)
+        }
+      })
+    }   
+    return result;
  };
     // var result = [];
 
