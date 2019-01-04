@@ -97,22 +97,26 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
-    var result = [];
-    var uniques = {};
+  //array: [1, 2, 3, 4, 5]
+  if (!isSorted) {
+    array = array.sort(function(a, b) {
+      return a - b;
+    })
+  }
+  let iterated = []; // [true, false, false, false, false]
+  let indexed = []; // [0, 1]
+  let nodup = [];  // [1, 2]
+  
+  
+  
+  
+  
     
-    for (var i = 0; i < array.length; i++){
-      var element = array[i]
-      if (uniques[element] === undefined) {
-        uniques[element] = element
-      }
-    }
     
-    //iterate through object to get the non-duplicate keys
-    for (var uniqueKey in uniques) {
-      result.push(iterator(uniques[uniqueKey], uniqueKey, uniques));
-    }
     
-    return result;
+ };
+    // var result = [];
+
     // if (arguments.length === 3 && arguments[1]){
     //   for (var i = 0; i < array.length; i++){
     //     if (_.indexOf(result, array[i]) === -1){
@@ -128,7 +132,7 @@
     //   }
     // }
     // return result;
-  };
+ 
 
 
   // Return the results of applying an iterator to each element.
