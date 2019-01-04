@@ -97,9 +97,23 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
-    // var result = [];
+    var result = [];
+    var uniques = {};
     
-    // if (arguments.length === 3){
+    for (var i = 0; i < array.length; i++){
+      var element = array[i]
+      if (uniques[element] === undefined) {
+        uniques[element] = element
+      }
+    }
+    
+    //iterate through object to get the non-duplicate keys
+    for (var uniqueKey in uniques) {
+      result.push(iterator(uniques[uniqueKey], uniqueKey, uniques));
+    }
+    
+    return result;
+    // if (arguments.length === 3 && arguments[1]){
     //   for (var i = 0; i < array.length; i++){
     //     if (_.indexOf(result, array[i]) === -1){
     //       result.push(iterator(array[i]));
@@ -107,6 +121,7 @@
     //   }
     // } 
     
+  
     // for (var i = 0; i < array.length; i++){
     //   if (_.indexOf(result, array[i]) === -1){
     //     result.push(array[i]);
@@ -298,7 +313,7 @@
     let results = {};
     
     return function() {
-      var args = JSON.stringify(arguments);
+      var args = JSON.stringify([...arguments]);
       if (!results[args]) {
         results[args] = func.apply(null, arguments)
       }
@@ -315,12 +330,13 @@
   _.delay = function(func, wait) {
     
     let args = [...arguments];
+    args = args.slice(2,args.length);
     
-    return setTimeout(function() {
-      
-        func.apply(null, args)
-      
-    }, wait )
+    return setTimeout(function(){
+      return func.apply(null, args);
+    }, wait);
+    
+    
   };
 
 
@@ -335,7 +351,14 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
-    
+    var newArr = array.slice()
+    for (var i = 0; i < newArr.length; i++){
+      var random = Math.floor(Math.random() * Math.floor(i))
+      var temp = newArr[i];
+      newArr[i] = newArr[random]
+      newArr[random] = temp
+    }
+    return newArr;
   };
 
 
